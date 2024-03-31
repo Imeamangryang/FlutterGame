@@ -1,0 +1,41 @@
+{
+    "Map/SizeTest": {
+        "height": 4300,
+        "width": 2
+    },
+    "activeFile": "lobby.tmx",
+    "expandedProjectPaths": [
+    ],
+    "fileStates": {
+        "lobby.tmx": {
+            "scale": 0.75,
+            "selectedLayer": 3,
+            "viewCenter": {
+                "x": 666.6666666666665,
+                "y": 235.99999999999994
+            }
+        },
+        "pastoral-tileset-db32.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "treetop.tsx": {
+            "scaleInDock": 1
+        },
+        "trunk.tsx": {
+            "scaleInDock": 1
+        }
+    },
+    "last.imagePath": "C:/Users/jione/Desktop/Flutter/chatgame/assets/images",
+    "map.lastUsedFormat": "tmx",
+    "openFiles": [
+        "pastoral-tileset-db32.tsx",
+        "lobby.tmx"
+    ],
+    "project": "lobby.tiled-project",
+    "recentFiles": [
+        "pastoral-tileset-db32.tsx",
+        "lobby.tmx"
+    ],
+    "tileset.lastUsedFormat": "tsx"
+}

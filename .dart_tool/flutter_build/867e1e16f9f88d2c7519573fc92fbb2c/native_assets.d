@@ -1,0 +1,1 @@
+ C:\\Users\\jione\\Desktop\\Flutter\\chatgame\\.dart_tool\\flutter_build\\867e1e16f9f88d2c7519573fc92fbb2c\\native_assets.yaml: 
