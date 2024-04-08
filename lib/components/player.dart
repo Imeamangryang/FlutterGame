@@ -1,18 +1,17 @@
 import 'dart:async';
 
 import 'package:chatgame/chatgame.dart';
+import 'package:chatgame/components/textbox.dart';
 import 'package:flame/components.dart';
 import 'package:flame/sprite.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter/widgets.dart';
 
 enum PlayerState { idle, up, down, right, left, upleft, upright, downleft, downright }
 
 enum Direction { none, up, down, right, left, upleft, upright, downleft, downright }
 
 class Player extends SpriteAnimationGroupComponent with HasGameRef<Chatgame>, KeyboardHandler {
-  String character;
-  Player({super.position, required this.character});
-
   double animationSpeed = 0.15;
   double moveSpeed = 100;
 
@@ -25,18 +24,32 @@ class Player extends SpriteAnimationGroupComponent with HasGameRef<Chatgame>, Ke
   late final SpriteAnimation runUprightAnimation;
   late final SpriteAnimation runDownleftAnimation;
   late final SpriteAnimation runDownrightAnimation;
+  late TextComponent nickname;
 
   Direction playerDirection = Direction.none;
 
   @override
   FutureOr<void> onLoad() async {
     await loadAllAnimations();
+    debugMode = true;
+    anchor = Anchor.center;
+
+    nickname = TextComponent(
+        text: 'TestPlayer',
+        textRenderer:
+            TextPaint(style: const TextStyle(fontSize: 10, color: Color.fromARGB(255, 10, 10, 1))),
+        anchor: Anchor.bottomCenter,
+        position: Vector2(anchor.x + size.x / 2, anchor.y));
+
+    add(nickname);
+
     return super.onLoad();
   }
 
   @override
   void update(double dt) {
     movePlayer(dt);
+    nickname.position = Vector2(anchor.x + size.x / 2, anchor.y);
     super.update(dt);
   }
 
@@ -68,14 +81,14 @@ class Player extends SpriteAnimationGroupComponent with HasGameRef<Chatgame>, Ke
   FutureOr<void> loadAllAnimations() async {
     // idle state Animation Sheet
     final idlespriteSheet = SpriteSheet(
-        image: await gameRef.images.load('Characters/$character/Idle-Anim.png'),
+        image: await gameRef.images.load('Characters/Pikachu/Idle-Anim.png'),
         srcSize: Vector2(40.0, 56.0));
 
     idleAnimation = idlespriteSheet.createAnimation(row: 0, stepTime: animationSpeed, to: 6);
 
     // running state Animation Sheet
     final runningspriteSheet = SpriteSheet(
-        image: await gameRef.images.load('Characters/$character/Walk-Anim.png'),
+        image: await gameRef.images.load('Characters/Pikachu/Walk-Anim.png'),
         srcSize: Vector2(32.0, 40.0));
 
     runUpAnimation = runningspriteSheet.createAnimation(row: 4, stepTime: animationSpeed, to: 4);
@@ -144,5 +157,12 @@ class Player extends SpriteAnimationGroupComponent with HasGameRef<Chatgame>, Ke
         current = PlayerState.idle;
         break;
     }
+  }
+
+  void addMessage(TextBox message) async {
+    add(message);
+    await Future.delayed(const Duration(seconds: 5), () {
+      remove(message);
+    });
   }
 }

@@ -29,6 +29,9 @@ flutter:
     - assets/tiles/
     - assets/images/HUD/
     - assets/images/Characters/Pikachu/
+    - assets/images/Characters/Charmander/
+    - assets/images/Characters/Bulbasaur/
+    - assets/images/Characters/Squirtle/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

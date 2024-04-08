@@ -1,5 +1,11 @@
 import 'dart:async';
+import 'dart:io';
 
+import 'package:chatgame/components/characters/bulbasaur.dart';
+import 'package:chatgame/components/characters/charmander.dart';
+import 'package:chatgame/components/characters/pikachu.dart';
+import 'package:chatgame/components/characters/squirtle.dart';
+import 'package:chatgame/components/chat.dart';
 import 'package:chatgame/components/levels.dart';
 import 'package:chatgame/components/player.dart';
 import 'package:flame/components.dart';
@@ -7,13 +13,17 @@ import 'package:flame/events.dart';
 import 'package:flame/game.dart';
 import 'package:flutter/widgets.dart';
 
-class Chatgame extends FlameGame with HasKeyboardHandlerComponents, DragCallbacks {
+class Chatgame extends FlameGame with HasKeyboardHandlerComponents, DragCallbacks, TapCallbacks {
   @override
   Color backgroundColor() => const Color(0xFFE7DDB9);
-  Player player = Player(character: 'Pikachu');
   late CameraComponent cam;
   late JoystickComponent joystick;
-  bool showjoystick = true;
+  bool showjoystick = Platform.isAndroid || Platform.isIOS;
+
+  //Pikachu player2 = Pikachu();
+  //Charmander player = Charmander();
+  Bulbasaur player = Bulbasaur();
+  Squirtle player2 = Squirtle();
 
   @override
   FutureOr<void> onLoad() async {
@@ -21,16 +31,23 @@ class Chatgame extends FlameGame with HasKeyboardHandlerComponents, DragCallback
 
     final Level world = Level(levelName: 'lobby');
 
-    cam = CameraComponent.withFixedResolution(world: world, width: 480, height: 320);
+    //cam = CameraComponent.withFixedResolution(world: world, width: 700, height: 320);
+    cam = CameraComponent(world: world);
     cam.viewfinder.anchor = Anchor.center;
+    cam.priority = 1;
 
     await addAll([cam, world]);
 
+    // player.debugMode = true;
+    // player2.debugMode = true;
+
     world.addPlayer(player);
+    world.addPlayer(player2);
     cam.follow(player);
 
     if (showjoystick) {
       addJoystick();
+      add(ChatButton()..priority = 2);
     }
 
     return super.onLoad();
@@ -46,7 +63,7 @@ class Chatgame extends FlameGame with HasKeyboardHandlerComponents, DragCallback
 
   void addJoystick() {
     joystick = JoystickComponent(
-      priority: 10,
+      priority: 2,
       knob: SpriteComponent(
         sprite: Sprite(
           images.fromCache('HUD/Knob.png'),

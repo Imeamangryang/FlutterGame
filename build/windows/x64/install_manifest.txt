@@ -2,8 +2,14 @@ C:/Users/jione/Desktop/Flutter/chatgame/build/windows/x64/runner/Debug/data/icud
 C:/Users/jione/Desktop/Flutter/chatgame/build/windows/x64/runner/Debug/flutter_windows.dll
 C:/Users/jione/Desktop/Flutter/chatgame/build/windows/x64/runner/Debug/data/flutter_assets/AssetManifest.bin
 C:/Users/jione/Desktop/Flutter/chatgame/build/windows/x64/runner/Debug/data/flutter_assets/AssetManifest.json
+C:/Users/jione/Desktop/Flutter/chatgame/build/windows/x64/runner/Debug/data/flutter_assets/assets/images/Characters/Bulbasaur/Idle-Anim.png
+C:/Users/jione/Desktop/Flutter/chatgame/build/windows/x64/runner/Debug/data/flutter_assets/assets/images/Characters/Bulbasaur/Walk-Anim.png
+C:/Users/jione/Desktop/Flutter/chatgame/build/windows/x64/runner/Debug/data/flutter_assets/assets/images/Characters/Charmander/Idle-Anim.png
+C:/Users/jione/Desktop/Flutter/chatgame/build/windows/x64/runner/Debug/data/flutter_assets/assets/images/Characters/Charmander/Walk-Anim.png
 C:/Users/jione/Desktop/Flutter/chatgame/build/windows/x64/runner/Debug/data/flutter_assets/assets/images/Characters/Pikachu/Idle-Anim.png
 C:/Users/jione/Desktop/Flutter/chatgame/build/windows/x64/runner/Debug/data/flutter_assets/assets/images/Characters/Pikachu/Walk-Anim.png
+C:/Users/jione/Desktop/Flutter/chatgame/build/windows/x64/runner/Debug/data/flutter_assets/assets/images/Characters/Squirtle/Idle-Anim.png
+C:/Users/jione/Desktop/Flutter/chatgame/build/windows/x64/runner/Debug/data/flutter_assets/assets/images/Characters/Squirtle/Walk-Anim.png
 C:/Users/jione/Desktop/Flutter/chatgame/build/windows/x64/runner/Debug/data/flutter_assets/assets/images/HUD/Joystick.png
 C:/Users/jione/Desktop/Flutter/chatgame/build/windows/x64/runner/Debug/data/flutter_assets/assets/images/HUD/JumpButton.png
 C:/Users/jione/Desktop/Flutter/chatgame/build/windows/x64/runner/Debug/data/flutter_assets/assets/images/HUD/Knob.png
