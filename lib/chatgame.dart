@@ -34,6 +34,7 @@ class Chatgame extends FlameGame with HasKeyboardHandlerComponents, DragCallback
     //cam = CameraComponent.withFixedResolution(world: world, width: 700, height: 320);
     cam = CameraComponent(world: world);
     cam.viewfinder.anchor = Anchor.center;
+    cam.viewfinder.zoom = 2;
     cam.priority = 1;
 
     await addAll([cam, world]);

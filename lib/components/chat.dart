@@ -10,6 +10,7 @@ class ChatButton extends SpriteComponent with HasGameRef<Chatgame>, TapCallbacks
 
   final margin = 32;
   final buttonSize = 64;
+  final String textfieldoverlay = 'TextField';
 
   @override
   FutureOr<void> onLoad() {
@@ -23,6 +24,7 @@ class ChatButton extends SpriteComponent with HasGameRef<Chatgame>, TapCallbacks
   void onTapDown(TapDownEvent event) {
     print('test');
     game.player.addMessage(TextBox('테스트 채팅'));
+    game.overlays.add(textfieldoverlay);
     super.onTapDown(event);
   }
 }

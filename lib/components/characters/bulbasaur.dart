@@ -1,13 +1,11 @@
 import 'dart:async';
 
 import 'package:chatgame/components/player.dart';
-import 'package:chatgame/components/textbox.dart';
 import 'package:flame/components.dart';
 import 'package:flame/sprite.dart';
 import 'package:flutter/widgets.dart';
 
 class Bulbasaur extends Player {
-  //TextBox testtext = TextBox('풀스택서비스프로그래밍테스트 하는데 왜 짤리냐');
   @override
   FutureOr<void> onLoad() async {
     await loadAllAnimations();
@@ -21,7 +19,6 @@ class Bulbasaur extends Player {
         position: Vector2(anchor.x + size.x / 2, anchor.y));
 
     add(nickname);
-    //add(testtext);
   }
 
   @override
