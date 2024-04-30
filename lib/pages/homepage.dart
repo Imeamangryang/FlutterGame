@@ -53,8 +53,10 @@ class MainMenu extends StatelessWidget {
             ),
             ElevatedButton(
                 onPressed: () {
-                  Navigator.of(context).pushReplacement(
-                      MaterialPageRoute(builder: (context) => GamePlay()));
+                  Navigator.of(context).pushReplacement(MaterialPageRoute(
+                      builder: (context) => GamePlay(
+                            name: nickname,
+                          )));
                 },
                 child: const Text('Play'))
           ],

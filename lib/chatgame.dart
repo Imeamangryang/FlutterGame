@@ -15,13 +15,16 @@ import 'package:flutter/widgets.dart';
 
 class Chatgame extends FlameGame
     with HasKeyboardHandlerComponents, DragCallbacks, TapCallbacks {
+  String name;
+  late Player player;
+  Chatgame({required this.name}) {
+    player = Bulbasaur(name);
+  }
   @override
   Color backgroundColor() => const Color(0xFFE7DDB9);
   late CameraComponent cam;
   late JoystickComponent joystick;
   bool showjoystick = Platform.isAndroid || Platform.isIOS;
-
-  Bulbasaur player = Bulbasaur('닉네임 테스트');
 
   @override
   FutureOr<void> onLoad() async {
