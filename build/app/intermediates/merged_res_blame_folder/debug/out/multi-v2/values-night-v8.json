@@ -4,7 +4,7 @@
             "outputFile": "com.example.chatgame.app-mergeDebugResources-9:/values-night-v8/values-night-v8.xml",
             "map": [
                 {
-                    "source": "C:\\Users\\jione\\Desktop\\Flutter\\chatgame\\android\\app\\src\\main\\res\\values-night\\styles.xml",
+                    "source": "C:\\Users\\jione\\Desktop\\dart_flautter\\FlutterGame\\android\\app\\src\\main\\res\\values-night\\styles.xml",
                     "from": {
                         "startLines": "3,14",
                         "startColumns": "4,4",

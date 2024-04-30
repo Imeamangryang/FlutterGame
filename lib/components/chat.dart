@@ -5,7 +5,8 @@ import 'package:chatgame/components/textbox.dart';
 import 'package:flame/components.dart';
 import 'package:flame/events.dart';
 
-class ChatButton extends SpriteComponent with HasGameRef<Chatgame>, TapCallbacks {
+class ChatButton extends SpriteComponent
+    with HasGameRef<Chatgame>, TapCallbacks {
   ChatButton();
 
   final margin = 32;
@@ -15,7 +16,8 @@ class ChatButton extends SpriteComponent with HasGameRef<Chatgame>, TapCallbacks
   @override
   FutureOr<void> onLoad() {
     sprite = Sprite(game.images.fromCache('HUD/ChatButton.png'));
-    position = Vector2(game.size.x - margin - buttonSize, game.size.y - margin - buttonSize);
+    position = Vector2(
+        game.size.x - margin - buttonSize, game.size.y - margin - buttonSize);
     size = size / 4;
     return super.onLoad();
   }
@@ -23,7 +25,7 @@ class ChatButton extends SpriteComponent with HasGameRef<Chatgame>, TapCallbacks
   @override
   void onTapDown(TapDownEvent event) {
     print('test');
-    game.player.addMessage(TextBox('테스트 채팅'));
+    //game.player.addMessage(TextBox('테스트 채팅'));
     game.overlays.add(textfieldoverlay);
     super.onTapDown(event);
   }

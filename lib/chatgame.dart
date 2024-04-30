@@ -13,17 +13,15 @@ import 'package:flame/events.dart';
 import 'package:flame/game.dart';
 import 'package:flutter/widgets.dart';
 
-class Chatgame extends FlameGame with HasKeyboardHandlerComponents, DragCallbacks, TapCallbacks {
+class Chatgame extends FlameGame
+    with HasKeyboardHandlerComponents, DragCallbacks, TapCallbacks {
   @override
   Color backgroundColor() => const Color(0xFFE7DDB9);
   late CameraComponent cam;
   late JoystickComponent joystick;
   bool showjoystick = Platform.isAndroid || Platform.isIOS;
 
-  //Pikachu player2 = Pikachu();
-  //Charmander player = Charmander();
-  Bulbasaur player = Bulbasaur();
-  Squirtle player2 = Squirtle();
+  Bulbasaur player = Bulbasaur('닉네임 테스트');
 
   @override
   FutureOr<void> onLoad() async {
@@ -43,7 +41,6 @@ class Chatgame extends FlameGame with HasKeyboardHandlerComponents, DragCallback
     // player2.debugMode = true;
 
     world.addPlayer(player);
-    world.addPlayer(player2);
     cam.follow(player);
 
     if (showjoystick) {

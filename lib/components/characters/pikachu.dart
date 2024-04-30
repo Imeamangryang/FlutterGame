@@ -6,6 +6,7 @@ import 'package:flame/sprite.dart';
 import 'package:flutter/widgets.dart';
 
 class Pikachu extends Player {
+  Pikachu(playername) : super(playername: playername);
   @override
   FutureOr<void> onLoad() async {
     await loadAllAnimations();
@@ -13,8 +14,9 @@ class Pikachu extends Player {
     anchor = Anchor.center;
     nickname = TextComponent(
         text: '피카츄',
-        textRenderer:
-            TextPaint(style: const TextStyle(fontSize: 10, color: Color.fromARGB(255, 10, 10, 1))),
+        textRenderer: TextPaint(
+            style: const TextStyle(
+                fontSize: 10, color: Color.fromARGB(255, 10, 10, 1))),
         anchor: Anchor.bottomCenter,
         position: Vector2(anchor.x + size.x / 2, anchor.y));
 
@@ -27,25 +29,30 @@ class Pikachu extends Player {
         image: await gameRef.images.load('Characters/Pikachu/Idle-Anim.png'),
         srcSize: Vector2(40.0, 56.0));
 
-    idleAnimation = idlespriteSheet.createAnimation(row: 0, stepTime: animationSpeed, to: 6);
+    idleAnimation = idlespriteSheet.createAnimation(
+        row: 0, stepTime: animationSpeed, to: 6);
 
     // running state Animation Sheet
     final runningspriteSheet = SpriteSheet(
         image: await gameRef.images.load('Characters/Pikachu/Walk-Anim.png'),
         srcSize: Vector2(32.0, 40.0));
 
-    runUpAnimation = runningspriteSheet.createAnimation(row: 4, stepTime: animationSpeed, to: 4);
-    runDownAnimation = runningspriteSheet.createAnimation(row: 0, stepTime: animationSpeed, to: 4);
-    runRightAnimation = runningspriteSheet.createAnimation(row: 2, stepTime: animationSpeed, to: 4);
-    runLeftAnimation = runningspriteSheet.createAnimation(row: 6, stepTime: animationSpeed, to: 4);
-    runUpleftAnimation =
-        runningspriteSheet.createAnimation(row: 5, stepTime: animationSpeed, to: 4);
-    runUprightAnimation =
-        runningspriteSheet.createAnimation(row: 3, stepTime: animationSpeed, to: 4);
-    runDownleftAnimation =
-        runningspriteSheet.createAnimation(row: 7, stepTime: animationSpeed, to: 4);
-    runDownrightAnimation =
-        runningspriteSheet.createAnimation(row: 1, stepTime: animationSpeed, to: 4);
+    runUpAnimation = runningspriteSheet.createAnimation(
+        row: 4, stepTime: animationSpeed, to: 4);
+    runDownAnimation = runningspriteSheet.createAnimation(
+        row: 0, stepTime: animationSpeed, to: 4);
+    runRightAnimation = runningspriteSheet.createAnimation(
+        row: 2, stepTime: animationSpeed, to: 4);
+    runLeftAnimation = runningspriteSheet.createAnimation(
+        row: 6, stepTime: animationSpeed, to: 4);
+    runUpleftAnimation = runningspriteSheet.createAnimation(
+        row: 5, stepTime: animationSpeed, to: 4);
+    runUprightAnimation = runningspriteSheet.createAnimation(
+        row: 3, stepTime: animationSpeed, to: 4);
+    runDownleftAnimation = runningspriteSheet.createAnimation(
+        row: 7, stepTime: animationSpeed, to: 4);
+    runDownrightAnimation = runningspriteSheet.createAnimation(
+        row: 1, stepTime: animationSpeed, to: 4);
 
     animations = {
       PlayerState.idle: idleAnimation,

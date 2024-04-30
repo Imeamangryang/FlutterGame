@@ -7,11 +7,34 @@ import 'package:flame/sprite.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 
-enum PlayerState { idle, up, down, right, left, upleft, upright, downleft, downright }
+enum PlayerState {
+  idle,
+  up,
+  down,
+  right,
+  left,
+  upleft,
+  upright,
+  downleft,
+  downright
+}
 
-enum Direction { none, up, down, right, left, upleft, upright, downleft, downright }
+enum Direction {
+  none,
+  up,
+  down,
+  right,
+  left,
+  upleft,
+  upright,
+  downleft,
+  downright
+}
 
-class Player extends SpriteAnimationGroupComponent with HasGameRef<Chatgame>, KeyboardHandler {
+class Player extends SpriteAnimationGroupComponent
+    with HasGameRef<Chatgame>, KeyboardHandler {
+  String playername;
+  Player({required this.playername});
   double animationSpeed = 0.15;
   double moveSpeed = 100;
 
@@ -28,6 +51,8 @@ class Player extends SpriteAnimationGroupComponent with HasGameRef<Chatgame>, Ke
 
   Direction playerDirection = Direction.none;
 
+  final String textfieldoverlay = 'TextField';
+
   @override
   FutureOr<void> onLoad() async {
     await loadAllAnimations();
@@ -35,9 +60,10 @@ class Player extends SpriteAnimationGroupComponent with HasGameRef<Chatgame>, Ke
     anchor = Anchor.center;
 
     nickname = TextComponent(
-        text: 'TestPlayer',
-        textRenderer:
-            TextPaint(style: const TextStyle(fontSize: 10, color: Color.fromARGB(255, 10, 10, 1))),
+        text: playername,
+        textRenderer: TextPaint(
+            style: const TextStyle(
+                fontSize: 10, color: Color.fromARGB(255, 10, 10, 1))),
         anchor: Anchor.bottomCenter,
         position: Vector2(anchor.x + size.x / 2, anchor.y));
 
@@ -84,25 +110,30 @@ class Player extends SpriteAnimationGroupComponent with HasGameRef<Chatgame>, Ke
         image: await gameRef.images.load('Characters/Pikachu/Idle-Anim.png'),
         srcSize: Vector2(40.0, 56.0));
 
-    idleAnimation = idlespriteSheet.createAnimation(row: 0, stepTime: animationSpeed, to: 6);
+    idleAnimation = idlespriteSheet.createAnimation(
+        row: 0, stepTime: animationSpeed, to: 6);
 
     // running state Animation Sheet
     final runningspriteSheet = SpriteSheet(
         image: await gameRef.images.load('Characters/Pikachu/Walk-Anim.png'),
         srcSize: Vector2(32.0, 40.0));
 
-    runUpAnimation = runningspriteSheet.createAnimation(row: 4, stepTime: animationSpeed, to: 4);
-    runDownAnimation = runningspriteSheet.createAnimation(row: 0, stepTime: animationSpeed, to: 4);
-    runRightAnimation = runningspriteSheet.createAnimation(row: 2, stepTime: animationSpeed, to: 4);
-    runLeftAnimation = runningspriteSheet.createAnimation(row: 6, stepTime: animationSpeed, to: 4);
-    runUpleftAnimation =
-        runningspriteSheet.createAnimation(row: 5, stepTime: animationSpeed, to: 4);
-    runUprightAnimation =
-        runningspriteSheet.createAnimation(row: 3, stepTime: animationSpeed, to: 4);
-    runDownleftAnimation =
-        runningspriteSheet.createAnimation(row: 7, stepTime: animationSpeed, to: 4);
-    runDownrightAnimation =
-        runningspriteSheet.createAnimation(row: 1, stepTime: animationSpeed, to: 4);
+    runUpAnimation = runningspriteSheet.createAnimation(
+        row: 4, stepTime: animationSpeed, to: 4);
+    runDownAnimation = runningspriteSheet.createAnimation(
+        row: 0, stepTime: animationSpeed, to: 4);
+    runRightAnimation = runningspriteSheet.createAnimation(
+        row: 2, stepTime: animationSpeed, to: 4);
+    runLeftAnimation = runningspriteSheet.createAnimation(
+        row: 6, stepTime: animationSpeed, to: 4);
+    runUpleftAnimation = runningspriteSheet.createAnimation(
+        row: 5, stepTime: animationSpeed, to: 4);
+    runUprightAnimation = runningspriteSheet.createAnimation(
+        row: 3, stepTime: animationSpeed, to: 4);
+    runDownleftAnimation = runningspriteSheet.createAnimation(
+        row: 7, stepTime: animationSpeed, to: 4);
+    runDownrightAnimation = runningspriteSheet.createAnimation(
+        row: 1, stepTime: animationSpeed, to: 4);
 
     animations = {
       PlayerState.idle: idleAnimation,
@@ -161,6 +192,7 @@ class Player extends SpriteAnimationGroupComponent with HasGameRef<Chatgame>, Ke
 
   void addMessage(TextBox message) async {
     add(message);
+    game.overlays.remove(textfieldoverlay);
     await Future.delayed(const Duration(seconds: 5), () {
       remove(message);
     });

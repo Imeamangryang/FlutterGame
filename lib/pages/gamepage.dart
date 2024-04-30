@@ -1,13 +1,14 @@
 import 'package:chatgame/chatgame.dart';
+import 'package:chatgame/components/textbox.dart';
 import 'package:flame/game.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-
-Chatgame game = Chatgame();
+import 'package:flutter/widgets.dart';
 
 class GamePlay extends StatelessWidget {
-  const GamePlay({Key? key}) : super(key: key);
+  GamePlay({super.key});
 
+  Chatgame game = Chatgame();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -15,7 +16,7 @@ class GamePlay extends StatelessWidget {
         game: kDebugMode ? Chatgame() : game,
         overlayBuilderMap: {
           'TextField': (BuildContext context, Chatgame game) {
-            return const Center(
+            return Center(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
@@ -24,19 +25,27 @@ class GamePlay extends StatelessWidget {
                       child: SizedBox(
                         width: 400,
                         child: TextField(
-                          decoration: InputDecoration(
+                          onSubmitted: (value) {
+                            game.player.addMessage(TextBox(value));
+                          },
+                          decoration: const InputDecoration(
                               focusedBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.all(Radius.circular(10.0)),
-                                borderSide:
-                                    BorderSide(width: 3, color: Color.fromARGB(255, 176, 239, 255)),
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(10.0)),
+                                borderSide: BorderSide(
+                                    width: 3,
+                                    color: Color.fromARGB(255, 176, 239, 255)),
                               ),
                               enabledBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.all(Radius.circular(10.0)),
-                                borderSide:
-                                    BorderSide(width: 3, color: Color.fromARGB(255, 176, 239, 255)),
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(10.0)),
+                                borderSide: BorderSide(
+                                    width: 3,
+                                    color: Color.fromARGB(255, 176, 239, 255)),
                               ),
                               border: OutlineInputBorder(
-                                borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(10.0)),
                               ),
                               labelText: '',
                               alignLabelWithHint: false,
@@ -53,3 +62,5 @@ class GamePlay extends StatelessWidget {
     );
   }
 }
+
+class $value {}
