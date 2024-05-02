@@ -13,7 +13,7 @@ class Charmander extends Player {
 
     anchor = Anchor.center;
     nickname = TextComponent(
-        text: '파이리',
+        text: playername,
         textRenderer: TextPaint(
             style: const TextStyle(
                 fontSize: 10, color: Color.fromARGB(255, 10, 10, 1))),

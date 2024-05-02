@@ -7,17 +7,20 @@ import 'package:flutter/widgets.dart';
 
 class GamePlay extends StatelessWidget {
   late String name;
+  late String character;
   late Chatgame game;
-  GamePlay({super.key, required this.name}) {
-    game = Chatgame(name: name);
+  GamePlay({super.key, required this.name, required this.character}) {
+    game = Chatgame(name: name, character: character);
     name = name;
+    character = character;
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: GameWidget(
-        game: kDebugMode ? Chatgame(name: name) : game,
+        game: game,
+        //game: kDebugMode ? Chatgame(name: name, character: character) : game,
         overlayBuilderMap: {
           'TextField': (BuildContext context, Chatgame game) {
             return Center(

@@ -16,10 +16,21 @@ import 'package:flutter/widgets.dart';
 class Chatgame extends FlameGame
     with HasKeyboardHandlerComponents, DragCallbacks, TapCallbacks {
   String name;
+  String character;
   late Player player;
-  Chatgame({required this.name}) {
-    player = Bulbasaur(name);
+  Chatgame({required this.name, required this.character}) {
+    print(name);
+    if (character == 'Bulbasaur') {
+      player = Bulbasaur(name);
+    } else if (character == 'Charmander') {
+      player = Charmander(name);
+    } else if (character == 'Squirtle') {
+      player = Squirtle(name);
+    } else if (character == 'Pikachu') {
+      player = Pikachu(name);
+    }
   }
+
   @override
   Color backgroundColor() => const Color(0xFFE7DDB9);
   late CameraComponent cam;

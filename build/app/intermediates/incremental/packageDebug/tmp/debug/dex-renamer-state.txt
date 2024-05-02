@@ -1,4 +1,4 @@
-#Tue Apr 30 13:09:40 KST 2024
+#Thu May 02 14:06:57 KST 2024
 base.0=C\:\\Users\\jione\\Desktop\\dart_flautter\\FlutterGame\\build\\app\\intermediates\\dex\\debug\\mergeDexDebug\\classes.dex
 path.0=classes.dex
 renamed.0=classes.dex

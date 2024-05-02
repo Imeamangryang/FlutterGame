@@ -1,8 +1,9 @@
+import 'package:chatgame/pages/characterpage.dart';
 import 'package:chatgame/pages/gamepage.dart';
 import 'package:flutter/material.dart';
 
 class MainMenu extends StatelessWidget {
-  const MainMenu({Key? key}) : super(key: key);
+  const MainMenu({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -51,14 +52,17 @@ class MainMenu extends StatelessWidget {
                     fillColor: Color.fromARGB(255, 214, 242, 255)),
               ),
             ),
-            ElevatedButton(
-                onPressed: () {
-                  Navigator.of(context).pushReplacement(MaterialPageRoute(
-                      builder: (context) => GamePlay(
-                            name: nickname,
-                          )));
-                },
-                child: const Text('Play'))
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 10.0),
+              child: ElevatedButton(
+                  onPressed: () {
+                    Navigator.of(context).pushReplacement(MaterialPageRoute(
+                        builder: (context) => CharacterMenu(
+                              name: nickname,
+                            )));
+                  },
+                  child: const Text('Next')),
+            ),
           ],
         ),
       ),
