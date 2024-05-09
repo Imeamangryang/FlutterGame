@@ -1,5 +1,4 @@
 import 'package:chatgame/pages/characterpage.dart';
-import 'package:chatgame/pages/gamepage.dart';
 import 'package:flutter/material.dart';
 
 class MainMenu extends StatelessWidget {

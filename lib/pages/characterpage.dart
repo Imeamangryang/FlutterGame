@@ -1,6 +1,7 @@
 import 'package:chatgame/pages/gamepage.dart';
 import 'package:flutter/material.dart';
 
+// ignore: must_be_immutable
 class CharacterMenu extends StatelessWidget {
   late String name;
   CharacterMenu({super.key, required this.name}) {

@@ -6,6 +6,7 @@ import 'package:flame/components.dart';
 import 'package:flame/sprite.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
+import 'package:uuid/uuid.dart';
 
 enum PlayerState {
   idle,
@@ -48,6 +49,7 @@ class Player extends SpriteAnimationGroupComponent
   late final SpriteAnimation runDownleftAnimation;
   late final SpriteAnimation runDownrightAnimation;
   late TextComponent nickname;
+  late final Uuid playerID;
 
   Direction playerDirection = Direction.none;
 

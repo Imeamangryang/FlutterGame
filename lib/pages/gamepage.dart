@@ -1,10 +1,9 @@
 import 'package:chatgame/chatgame.dart';
 import 'package:chatgame/components/textbox.dart';
 import 'package:flame/game.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 
+// ignore: must_be_immutable
 class GamePlay extends StatelessWidget {
   late String name;
   late String character;

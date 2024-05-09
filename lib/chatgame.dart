@@ -12,14 +12,18 @@ import 'package:flame/components.dart';
 import 'package:flame/events.dart';
 import 'package:flame/game.dart';
 import 'package:flutter/widgets.dart';
+import 'package:uuid/uuid.dart';
+import 'package:web_socket_channel/web_socket_channel.dart';
 
 class Chatgame extends FlameGame
     with HasKeyboardHandlerComponents, DragCallbacks, TapCallbacks {
   String name;
   String character;
   late Player player;
+  // late final Uri serveruri;
+  // late final WebSocketChannel channel;
   Chatgame({required this.name, required this.character}) {
-    print(name);
+    // Player Setting
     if (character == 'Bulbasaur') {
       player = Bulbasaur(name);
     } else if (character == 'Charmander') {
@@ -29,6 +33,10 @@ class Chatgame extends FlameGame
     } else if (character == 'Pikachu') {
       player = Pikachu(name);
     }
+
+    // WebSocket Connection
+    // serveruri = Uri.parse('ws://localhost:8080/ws');
+    // channel = WebSocketChannel.connect(serveruri);
   }
 
   @override
@@ -38,10 +46,11 @@ class Chatgame extends FlameGame
   bool showjoystick = Platform.isAndroid || Platform.isIOS;
 
   @override
+  final Level world = Level(levelName: 'lobby');
+
+  @override
   FutureOr<void> onLoad() async {
     await images.loadAllImages();
-
-    final Level world = Level(levelName: 'lobby');
 
     //cam = CameraComponent.withFixedResolution(world: world, width: 700, height: 320);
     cam = CameraComponent(world: world);
@@ -56,6 +65,8 @@ class Chatgame extends FlameGame
 
     world.addPlayer(player);
     cam.follow(player);
+
+    setplayer();
 
     if (showjoystick) {
       addJoystick();
@@ -122,5 +133,27 @@ class Chatgame extends FlameGame
         player.playerDirection = Direction.none;
         break;
     }
+  }
+
+  void setplayer() {
+    // WebSocket Send Message
+    // channel.sink.add('client says: hello');
+    // player.playerID = const Uuid();
+    // channel.sink.add(player.playerID.v4());
+
+    // channel.stream.listen((event) {
+    //   print(event);
+    //   switch (event) {
+    //     case 'playername':
+    //       // channel.stream.take(2).listen((event) {
+    //       //   print(event);
+    //       //   print(event);
+    //       // });
+    //       break;
+    //   }
+    // });
+
+    Player otherplayer = Charmander('test');
+    world.addPlayer(otherplayer);
   }
 }
