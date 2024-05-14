@@ -17,6 +17,11 @@ dependencies:
   google_fonts: ^6.2.1
   web_socket_channel: ^3.0.0
   uuid: ^4.4.0
+  get: ^4.6.6
+  flutter_bloc: ^8.1.5
+  bloc: ^8.1.4
+  equatable: ^2.0.5
+  flame_bloc: ^1.11.1
 
 dev_dependencies:
   flutter_test:

@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:chatgame/components/characters/bulbasaur.dart';
@@ -7,7 +8,8 @@ import 'package:chatgame/components/characters/pikachu.dart';
 import 'package:chatgame/components/characters/squirtle.dart';
 import 'package:chatgame/components/chat.dart';
 import 'package:chatgame/components/levels.dart';
-import 'package:chatgame/components/player.dart';
+import 'package:chatgame/components/Player/player.dart';
+import 'package:chatgame/components/textbox.dart';
 import 'package:flame/components.dart';
 import 'package:flame/events.dart';
 import 'package:flame/game.dart';
@@ -15,13 +17,12 @@ import 'package:flutter/widgets.dart';
 import 'package:uuid/uuid.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
 
-class Chatgame extends FlameGame
-    with HasKeyboardHandlerComponents, DragCallbacks, TapCallbacks {
+class Chatgame extends FlameGame with HasKeyboardHandlerComponents, DragCallbacks, TapCallbacks {
   String name;
   String character;
   late Player player;
-  // late final Uri serveruri;
-  // late final WebSocketChannel channel;
+  late final Uri serveruri;
+  late final WebSocketChannel channel;
   Chatgame({required this.name, required this.character}) {
     // Player Setting
     if (character == 'Bulbasaur') {
@@ -33,17 +34,24 @@ class Chatgame extends FlameGame
     } else if (character == 'Pikachu') {
       player = Pikachu(name);
     }
+    player.playerID = const Uuid().v4();
 
-    // WebSocket Connection
-    // serveruri = Uri.parse('ws://localhost:8080/ws');
-    // channel = WebSocketChannel.connect(serveruri);
+    //WebSocket Connection
+    serveruri = Uri.parse('ws://localhost:8080/ws');
+    channel = WebSocketChannel.connect(serveruri);
+
+    sendMessage(character, 'JoinPlayer');
   }
+
+  List<String> playerIDlist = [];
+  List<Player> playerlist = [];
 
   @override
   Color backgroundColor() => const Color(0xFFE7DDB9);
   late CameraComponent cam;
   late JoystickComponent joystick;
-  bool showjoystick = Platform.isAndroid || Platform.isIOS;
+  bool showjoystick = !Platform.isAndroid || !Platform.isIOS;
+  Direction previousDirection = Direction.none;
 
   @override
   final Level world = Level(levelName: 'lobby');
@@ -52,7 +60,6 @@ class Chatgame extends FlameGame
   FutureOr<void> onLoad() async {
     await images.loadAllImages();
 
-    //cam = CameraComponent.withFixedResolution(world: world, width: 700, height: 320);
     cam = CameraComponent(world: world);
     cam.viewfinder.anchor = Anchor.center;
     cam.viewfinder.zoom = 2;
@@ -66,7 +73,7 @@ class Chatgame extends FlameGame
     world.addPlayer(player);
     cam.follow(player);
 
-    setplayer();
+    listenMessage();
 
     if (showjoystick) {
       addJoystick();
@@ -104,56 +111,164 @@ class Chatgame extends FlameGame
   }
 
   void updateJoystick() {
+    final Direction newDirection;
     switch (joystick.direction) {
       case JoystickDirection.left:
-        player.playerDirection = Direction.left;
+        newDirection = Direction.left;
         break;
       case JoystickDirection.right:
-        player.playerDirection = Direction.right;
+        newDirection = Direction.right;
         break;
       case JoystickDirection.up:
-        player.playerDirection = Direction.up;
+        newDirection = Direction.up;
         break;
       case JoystickDirection.down:
-        player.playerDirection = Direction.down;
+        newDirection = Direction.down;
         break;
       case JoystickDirection.upLeft:
-        player.playerDirection = Direction.upleft;
+        newDirection = Direction.upleft;
         break;
       case JoystickDirection.upRight:
-        player.playerDirection = Direction.upright;
+        newDirection = Direction.upright;
         break;
       case JoystickDirection.downLeft:
-        player.playerDirection = Direction.downleft;
+        newDirection = Direction.downleft;
         break;
       case JoystickDirection.downRight:
-        player.playerDirection = Direction.downright;
+        newDirection = Direction.downright;
         break;
       default:
-        player.playerDirection = Direction.none;
+        newDirection = Direction.none;
         break;
+    }
+
+    if (newDirection != previousDirection) {
+      player.playerDirection = newDirection;
+      sendMessage(newDirection.toString(), 'MovePlayer');
+      previousDirection = newDirection;
     }
   }
 
-  void setplayer() {
-    // WebSocket Send Message
-    // channel.sink.add('client says: hello');
-    // player.playerID = const Uuid();
-    // channel.sink.add(player.playerID.v4());
+  void sendMessage(String msg, String event) {
+    final message = jsonEncode({
+      'PlayerID': player.playerID,
+      'PlayerName': player.playername,
+      'PosX': player.position.x,
+      'PosY': player.position.y,
+      'Event': event,
+      'Message': msg
+    });
+    channel.sink.add(message);
+  }
 
-    // channel.stream.listen((event) {
-    //   print(event);
-    //   switch (event) {
-    //     case 'playername':
-    //       // channel.stream.take(2).listen((event) {
-    //       //   print(event);
-    //       //   print(event);
-    //       // });
-    //       break;
-    //   }
-    // });
+  void listenMessage() {
+    channel.stream.listen((message) {
+      final data = jsonDecode(message);
 
-    Player otherplayer = Charmander('test');
+      if (data['PlayerID'] != player.playerID) {
+        switch (data['Event']) {
+          case 'MessageSend':
+            for (var player in playerlist) {
+              if (player.playerID == data['PlayerID']) {
+                player.addMessage(TextBox(data['Message']));
+              }
+            }
+            break;
+          case 'AddPlayer':
+            if (playerIDlist.contains(data['PlayerID'])) {
+              print("이미 존재하고 있음");
+              for (var player in playerlist) {
+                print(player.playername);
+              }
+            } else {
+              setplayer(data['PlayerID'], data['PlayerName'], data['Message'],
+                  Vector2(data['PosX'], data['PosY']));
+            }
+            break;
+          case 'JoinPlayer':
+            joinplayer(
+              data['PlayerID'],
+              data['PlayerName'],
+              data['Message'],
+            );
+            sendMessage(character, 'AddPlayer');
+            break;
+          case 'MovePlayer':
+            for (var otherplayer in playerlist) {
+              if (otherplayer.playerID == data['PlayerID']) {
+                switch (data['Message']) {
+                  case 'Direction.left':
+                    otherplayer.playerDirection = Direction.left;
+                    break;
+                  case 'Direction.right':
+                    otherplayer.playerDirection = Direction.right;
+                    break;
+                  case 'Direction.up':
+                    otherplayer.playerDirection = Direction.up;
+                    break;
+                  case 'Direction.down':
+                    otherplayer.playerDirection = Direction.down;
+                    break;
+                  case 'Direction.upleft':
+                    otherplayer.playerDirection = Direction.upleft;
+                    break;
+                  case 'Direction.upright':
+                    otherplayer.playerDirection = Direction.upright;
+                    break;
+                  case 'Direction.downleft':
+                    otherplayer.playerDirection = Direction.downleft;
+                    break;
+                  case 'Direction.downright':
+                    otherplayer.playerDirection = Direction.downright;
+                    break;
+                  case 'Direction.none':
+                    otherplayer.playerDirection = Direction.none;
+                    break;
+                }
+              }
+            }
+
+          default:
+            break;
+        }
+      }
+    });
+  }
+
+  void setplayer(String playerID, String name, String character, Vector2 position) {
+    late final Player otherplayer;
+    if (character == 'Bulbasaur') {
+      otherplayer = Bulbasaur(name);
+    } else if (character == 'Charmander') {
+      otherplayer = Charmander(name);
+    } else if (character == 'Squirtle') {
+      otherplayer = Squirtle(name);
+    } else if (character == 'Pikachu') {
+      otherplayer = Pikachu(name);
+    }
+    otherplayer.playerID = playerID;
     world.addPlayer(otherplayer);
+    otherplayer.position = position;
+
+    playerlist.add(otherplayer);
+    playerIDlist.add(otherplayer.playerID);
+  }
+
+  void joinplayer(String playerID, String name, String character) {
+    late final Player otherplayer;
+    if (character == 'Bulbasaur') {
+      otherplayer = Bulbasaur(name);
+    } else if (character == 'Charmander') {
+      otherplayer = Charmander(name);
+    } else if (character == 'Squirtle') {
+      otherplayer = Squirtle(name);
+    } else if (character == 'Pikachu') {
+      otherplayer = Pikachu(name);
+    }
+    otherplayer.playerID = playerID;
+    world.addPlayer(otherplayer);
+
+    playerlist.add(otherplayer);
+    playerIDlist.add(otherplayer.playerID);
   }
 }

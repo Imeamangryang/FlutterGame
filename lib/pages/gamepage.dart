@@ -33,25 +33,21 @@ class GamePlay extends StatelessWidget {
                         child: TextField(
                           onSubmitted: (value) {
                             game.player.addMessage(TextBox(value));
+                            game.sendMessage(value, 'MessageSend');
                           },
                           decoration: const InputDecoration(
                               focusedBorder: OutlineInputBorder(
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(10.0)),
-                                borderSide: BorderSide(
-                                    width: 3,
-                                    color: Color.fromARGB(255, 176, 239, 255)),
+                                borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                                borderSide:
+                                    BorderSide(width: 3, color: Color.fromARGB(255, 176, 239, 255)),
                               ),
                               enabledBorder: OutlineInputBorder(
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(10.0)),
-                                borderSide: BorderSide(
-                                    width: 3,
-                                    color: Color.fromARGB(255, 176, 239, 255)),
+                                borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                                borderSide:
+                                    BorderSide(width: 3, color: Color.fromARGB(255, 176, 239, 255)),
                               ),
                               border: OutlineInputBorder(
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(10.0)),
+                                borderRadius: BorderRadius.all(Radius.circular(10.0)),
                               ),
                               labelText: '',
                               alignLabelWithHint: false,
@@ -68,5 +64,3 @@ class GamePlay extends StatelessWidget {
     );
   }
 }
-
-class $value {}

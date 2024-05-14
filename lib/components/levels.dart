@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:chatgame/components/player.dart';
+import 'package:chatgame/components/Player/player.dart';
 import 'package:flame/components.dart';
 import 'package:flame_tiled/flame_tiled.dart';
 
