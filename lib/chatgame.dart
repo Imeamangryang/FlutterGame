@@ -13,6 +13,8 @@ import 'package:chatgame/components/textbox.dart';
 import 'package:flame/components.dart';
 import 'package:flame/events.dart';
 import 'package:flame/game.dart';
+import 'package:flutter/foundation.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:uuid/uuid.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
@@ -37,7 +39,7 @@ class Chatgame extends FlameGame with HasKeyboardHandlerComponents, DragCallback
     player.playerID = const Uuid().v4();
 
     //WebSocket Connection
-    serveruri = Uri.parse('ws://localhost:8080/ws');
+    serveruri = Uri.parse('ws://218.55.63.234:8888/ws');
     channel = WebSocketChannel.connect(serveruri);
 
     sendMessage(character, 'JoinPlayer');
@@ -50,7 +52,7 @@ class Chatgame extends FlameGame with HasKeyboardHandlerComponents, DragCallback
   Color backgroundColor() => const Color(0xFFE7DDB9);
   late CameraComponent cam;
   late JoystickComponent joystick;
-  bool showjoystick = !Platform.isAndroid || !Platform.isIOS;
+  bool showjoystick = false;
   Direction previousDirection = Direction.none;
 
   @override
@@ -68,17 +70,22 @@ class Chatgame extends FlameGame with HasKeyboardHandlerComponents, DragCallback
     await addAll([cam, world]);
 
     // player.debugMode = true;
-    // player2.debugMode = true;
 
     world.addPlayer(player);
     cam.follow(player);
 
     listenMessage();
 
+    if (kIsWeb) {
+    } else {
+      if (Platform.isAndroid || Platform.isIOS) {
+        showjoystick = true;
+      }
+    }
     if (showjoystick) {
       addJoystick();
-      add(ChatButton()..priority = 2);
     }
+    add(ChatButton()..priority = 2);
 
     return super.onLoad();
   }
@@ -89,6 +96,46 @@ class Chatgame extends FlameGame with HasKeyboardHandlerComponents, DragCallback
       updateJoystick();
     }
     super.update(dt);
+  }
+
+  @override
+  KeyEventResult onKeyEvent(KeyEvent event, Set<LogicalKeyboardKey> keysPressed) {
+    final Direction newDirection;
+    final isLEFTKeypressed = keysPressed.contains(LogicalKeyboardKey.keyA) ||
+        keysPressed.contains(LogicalKeyboardKey.arrowLeft);
+    final isRIGHTKeypressed = keysPressed.contains(LogicalKeyboardKey.keyD) ||
+        keysPressed.contains(LogicalKeyboardKey.arrowRight);
+    final isUPKeypressed = keysPressed.contains(LogicalKeyboardKey.keyW) ||
+        keysPressed.contains(LogicalKeyboardKey.arrowUp);
+    final isDOWNKeypressed = keysPressed.contains(LogicalKeyboardKey.keyS) ||
+        keysPressed.contains(LogicalKeyboardKey.arrowDown);
+
+    if (isLEFTKeypressed && isUPKeypressed) {
+      newDirection = Direction.upleft;
+    } else if (isRIGHTKeypressed && isUPKeypressed) {
+      newDirection = Direction.upright;
+    } else if (isLEFTKeypressed && isDOWNKeypressed) {
+      newDirection = Direction.downleft;
+    } else if (isRIGHTKeypressed && isDOWNKeypressed) {
+      newDirection = Direction.downright;
+    } else if (isLEFTKeypressed) {
+      newDirection = Direction.left;
+    } else if (isRIGHTKeypressed) {
+      newDirection = Direction.right;
+    } else if (isUPKeypressed) {
+      newDirection = Direction.up;
+    } else if (isDOWNKeypressed) {
+      newDirection = Direction.down;
+    } else {
+      newDirection = Direction.none;
+    }
+
+    if (newDirection != previousDirection) {
+      player.playerDirection = newDirection;
+      sendMessage(newDirection.toString(), 'MovePlayer');
+      previousDirection = newDirection;
+    }
+    return super.onKeyEvent(event, keysPressed);
   }
 
   void addJoystick() {

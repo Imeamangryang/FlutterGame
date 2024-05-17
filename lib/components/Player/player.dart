@@ -58,31 +58,6 @@ class Player extends SpriteAnimationGroupComponent with HasGameRef<Chatgame>, Ke
     super.update(dt);
   }
 
-  @override
-  bool onKeyEvent(KeyEvent event, Set<LogicalKeyboardKey> keysPressed) {
-    final isLEFTKeypressed = keysPressed.contains(LogicalKeyboardKey.keyA) ||
-        keysPressed.contains(LogicalKeyboardKey.arrowLeft);
-    final isRIGHTKeypressed = keysPressed.contains(LogicalKeyboardKey.keyD) ||
-        keysPressed.contains(LogicalKeyboardKey.arrowRight);
-    final isUPKeypressed = keysPressed.contains(LogicalKeyboardKey.keyW) ||
-        keysPressed.contains(LogicalKeyboardKey.arrowUp);
-    final isDOWNKeypressed = keysPressed.contains(LogicalKeyboardKey.keyS) ||
-        keysPressed.contains(LogicalKeyboardKey.arrowDown);
-
-    if (isLEFTKeypressed) {
-      playerDirection = Direction.left;
-    } else if (isRIGHTKeypressed) {
-      playerDirection = Direction.right;
-    } else if (isUPKeypressed) {
-      playerDirection = Direction.up;
-    } else if (isDOWNKeypressed) {
-      playerDirection = Direction.down;
-    } else {
-      playerDirection = Direction.none;
-    }
-    return super.onKeyEvent(event, keysPressed);
-  }
-
   FutureOr<void> loadAllAnimations() async {
     // idle state Animation Sheet
     final idlespriteSheet = SpriteSheet(
