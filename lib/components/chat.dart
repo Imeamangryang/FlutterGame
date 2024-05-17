@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:chatgame/chatgame.dart';
-import 'package:chatgame/components/textbox.dart';
 import 'package:flame/components.dart';
 import 'package:flame/events.dart';
 

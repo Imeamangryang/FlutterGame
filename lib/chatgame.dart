@@ -151,11 +151,11 @@ class Chatgame extends FlameGame with HasKeyboardHandlerComponents, DragCallback
 
   void sendMessage(String msg, String event) {
     final message = jsonEncode({
+      'Event': event,
       'PlayerID': player.playerID,
       'PlayerName': player.playername,
       'PosX': player.position.x,
       'PosY': player.position.y,
-      'Event': event,
       'Message': msg
     });
     channel.sink.add(message);
@@ -165,72 +165,65 @@ class Chatgame extends FlameGame with HasKeyboardHandlerComponents, DragCallback
     channel.stream.listen((message) {
       final data = jsonDecode(message);
 
-      if (data['PlayerID'] != player.playerID) {
-        switch (data['Event']) {
-          case 'MessageSend':
-            for (var player in playerlist) {
-              if (player.playerID == data['PlayerID']) {
-                player.addMessage(TextBox(data['Message']));
+      switch (data['Event']) {
+        case 'MessageSend':
+          for (var player in playerlist) {
+            if (player.playerID == data['PlayerID']) {
+              player.addMessage(TextBox(data['Message']));
+            }
+          }
+          break;
+        case 'AddPlayer':
+          setplayer(data['PlayerID'], data['PlayerName'], data['Message'],
+              Vector2(data['PosX'], data['PosY']));
+          break;
+        case "RemovePlayer":
+          var targetplayer;
+          for (var player in playerlist) {
+            if (player.playerID == data['PlayerID']) {
+              targetplayer = player;
+              playerIDlist.remove(player.playerID);
+              world.remove(player);
+            }
+          }
+          playerlist.remove(targetplayer);
+        case 'MovePlayer':
+          for (var otherplayer in playerlist) {
+            if (otherplayer.playerID == data['PlayerID']) {
+              switch (data['Message']) {
+                case 'Direction.left':
+                  otherplayer.playerDirection = Direction.left;
+                  break;
+                case 'Direction.right':
+                  otherplayer.playerDirection = Direction.right;
+                  break;
+                case 'Direction.up':
+                  otherplayer.playerDirection = Direction.up;
+                  break;
+                case 'Direction.down':
+                  otherplayer.playerDirection = Direction.down;
+                  break;
+                case 'Direction.upleft':
+                  otherplayer.playerDirection = Direction.upleft;
+                  break;
+                case 'Direction.upright':
+                  otherplayer.playerDirection = Direction.upright;
+                  break;
+                case 'Direction.downleft':
+                  otherplayer.playerDirection = Direction.downleft;
+                  break;
+                case 'Direction.downright':
+                  otherplayer.playerDirection = Direction.downright;
+                  break;
+                case 'Direction.none':
+                  otherplayer.playerDirection = Direction.none;
+                  break;
               }
             }
-            break;
-          case 'AddPlayer':
-            if (playerIDlist.contains(data['PlayerID'])) {
-              print("이미 존재하고 있음");
-              for (var player in playerlist) {
-                print(player.playername);
-              }
-            } else {
-              setplayer(data['PlayerID'], data['PlayerName'], data['Message'],
-                  Vector2(data['PosX'], data['PosY']));
-            }
-            break;
-          case 'JoinPlayer':
-            joinplayer(
-              data['PlayerID'],
-              data['PlayerName'],
-              data['Message'],
-            );
-            sendMessage(character, 'AddPlayer');
-            break;
-          case 'MovePlayer':
-            for (var otherplayer in playerlist) {
-              if (otherplayer.playerID == data['PlayerID']) {
-                switch (data['Message']) {
-                  case 'Direction.left':
-                    otherplayer.playerDirection = Direction.left;
-                    break;
-                  case 'Direction.right':
-                    otherplayer.playerDirection = Direction.right;
-                    break;
-                  case 'Direction.up':
-                    otherplayer.playerDirection = Direction.up;
-                    break;
-                  case 'Direction.down':
-                    otherplayer.playerDirection = Direction.down;
-                    break;
-                  case 'Direction.upleft':
-                    otherplayer.playerDirection = Direction.upleft;
-                    break;
-                  case 'Direction.upright':
-                    otherplayer.playerDirection = Direction.upright;
-                    break;
-                  case 'Direction.downleft':
-                    otherplayer.playerDirection = Direction.downleft;
-                    break;
-                  case 'Direction.downright':
-                    otherplayer.playerDirection = Direction.downright;
-                    break;
-                  case 'Direction.none':
-                    otherplayer.playerDirection = Direction.none;
-                    break;
-                }
-              }
-            }
+          }
 
-          default:
-            break;
-        }
+        default:
+          break;
       }
     });
   }
@@ -248,25 +241,9 @@ class Chatgame extends FlameGame with HasKeyboardHandlerComponents, DragCallback
     }
     otherplayer.playerID = playerID;
     world.addPlayer(otherplayer);
-    otherplayer.position = position;
-
-    playerlist.add(otherplayer);
-    playerIDlist.add(otherplayer.playerID);
-  }
-
-  void joinplayer(String playerID, String name, String character) {
-    late final Player otherplayer;
-    if (character == 'Bulbasaur') {
-      otherplayer = Bulbasaur(name);
-    } else if (character == 'Charmander') {
-      otherplayer = Charmander(name);
-    } else if (character == 'Squirtle') {
-      otherplayer = Squirtle(name);
-    } else if (character == 'Pikachu') {
-      otherplayer = Pikachu(name);
+    if (position.x != 0 || position.y != 0) {
+      otherplayer.position = position;
     }
-    otherplayer.playerID = playerID;
-    world.addPlayer(otherplayer);
 
     playerlist.add(otherplayer);
     playerIDlist.add(otherplayer.playerID);
