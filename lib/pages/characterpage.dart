@@ -10,7 +10,6 @@ class CharacterMenu extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
     return Scaffold(
       body: Center(
           child: Column(
@@ -28,11 +27,8 @@ class CharacterMenu extends StatelessWidget {
               IconButton(
                 icon: ClipRRect(
                   borderRadius: BorderRadius.circular(20.0),
-                  child: Image.asset(
-                      'assets/images/Characters/Bulbasaur/Bulbasaur.png',
-                      width: 100,
-                      height: 100,
-                      fit: BoxFit.contain),
+                  child: Image.asset('assets/images/Characters/Bulbasaur/Bulbasaur.png',
+                      width: 100, height: 100, fit: BoxFit.contain),
                 ),
                 style: ButtonStyle(
                   side: MaterialStateProperty.all(BorderSide.none),
@@ -50,11 +46,8 @@ class CharacterMenu extends StatelessWidget {
               IconButton(
                 icon: ClipRRect(
                   borderRadius: BorderRadius.circular(20.0),
-                  child: Image.asset(
-                      'assets/images/Characters/Charmander/Charmander.png',
-                      width: 100,
-                      height: 100,
-                      fit: BoxFit.contain),
+                  child: Image.asset('assets/images/Characters/Charmander/Charmander.png',
+                      width: 100, height: 100, fit: BoxFit.contain),
                 ),
                 style: ButtonStyle(
                   side: MaterialStateProperty.all(BorderSide.none),
@@ -72,11 +65,8 @@ class CharacterMenu extends StatelessWidget {
               IconButton(
                 icon: ClipRRect(
                   borderRadius: BorderRadius.circular(20.0),
-                  child: Image.asset(
-                      'assets/images/Characters/Squirtle/Squirtle.png',
-                      width: 100,
-                      height: 100,
-                      fit: BoxFit.contain),
+                  child: Image.asset('assets/images/Characters/Squirtle/Squirtle.png',
+                      width: 100, height: 100, fit: BoxFit.contain),
                 ),
                 style: ButtonStyle(
                   side: MaterialStateProperty.all(BorderSide.none),
@@ -94,11 +84,8 @@ class CharacterMenu extends StatelessWidget {
               IconButton(
                 icon: ClipRRect(
                   borderRadius: BorderRadius.circular(20.0),
-                  child: Image.asset(
-                      'assets/images/Characters/Pikachu/Pikachu.png',
-                      width: 100,
-                      height: 100,
-                      fit: BoxFit.contain),
+                  child: Image.asset('assets/images/Characters/Pikachu/Pikachu.png',
+                      width: 100, height: 100, fit: BoxFit.contain),
                 ),
                 style: ButtonStyle(
                   side: MaterialStateProperty.all(BorderSide.none),

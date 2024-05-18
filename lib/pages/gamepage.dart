@@ -1,5 +1,5 @@
 import 'package:chatgame/chatgame.dart';
-import 'package:chatgame/components/textbox.dart';
+import 'package:chatgame/components/UI/textbox.dart';
 import 'package:flame/game.dart';
 import 'package:flutter/material.dart';
 
@@ -27,7 +27,7 @@ class GamePlay extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   Padding(
-                      padding: EdgeInsets.only(bottom: 32),
+                      padding: const EdgeInsets.only(bottom: 32),
                       child: SizedBox(
                         width: 400,
                         child: TextField(

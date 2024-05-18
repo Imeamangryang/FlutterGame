@@ -5,14 +5,15 @@
     },
     "activeFile": "lobby.tmx",
     "expandedProjectPaths": [
+        "."
     ],
     "fileStates": {
         "lobby.tmx": {
             "scale": 0.75,
-            "selectedLayer": 0,
+            "selectedLayer": 2,
             "viewCenter": {
-                "x": 454.6666666666666,
-                "y": 446.66666666666674
+                "x": 469.99999999999994,
+                "y": 477.33333333333326
             }
         },
         "pastoral-tileset-db32.tsx": {

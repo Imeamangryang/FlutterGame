@@ -1,23 +1,26 @@
 import 'dart:async';
 
 import 'package:chatgame/chatgame.dart';
-import 'package:chatgame/components/textbox.dart';
+import 'package:chatgame/components/berries.dart';
+import 'package:chatgame/components/UI/textbox.dart';
+import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:flame/sprite.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 
-enum PlayerState { idle, up, down, right, left, upleft, upright, downleft, downright }
+enum PlayerState { idle, up, down, right, left, upleft, upright, downleft, downright, eat }
 
 enum Direction { none, up, down, right, left, upleft, upright, downleft, downright }
 
-class Player extends SpriteAnimationGroupComponent with HasGameRef<Chatgame>, KeyboardHandler {
+class Player extends SpriteAnimationGroupComponent
+    with HasGameRef<Chatgame>, KeyboardHandler, CollisionCallbacks {
   String playername;
   Player({required this.playername});
   double animationSpeed = 0.15;
   double moveSpeed = 100;
 
   late final SpriteAnimation idleAnimation;
+  late final SpriteAnimation eatAnimation;
   late final SpriteAnimation runUpAnimation;
   late final SpriteAnimation runDownAnimation;
   late final SpriteAnimation runRightAnimation;
@@ -32,12 +35,14 @@ class Player extends SpriteAnimationGroupComponent with HasGameRef<Chatgame>, Ke
   Direction playerDirection = Direction.none;
 
   final String textfieldoverlay = 'TextField';
+  bool isEating = false;
 
   @override
   FutureOr<void> onLoad() async {
     await loadAllAnimations();
-    debugMode = true;
+
     anchor = Anchor.center;
+    priority = 10;
 
     nickname = TextComponent(
         text: playername,
@@ -48,6 +53,8 @@ class Player extends SpriteAnimationGroupComponent with HasGameRef<Chatgame>, Ke
 
     add(nickname);
 
+    add(RectangleHitbox());
+
     return super.onLoad();
   }
 
@@ -56,6 +63,16 @@ class Player extends SpriteAnimationGroupComponent with HasGameRef<Chatgame>, Ke
     movePlayer(dt);
     nickname.position = Vector2(anchor.x + size.x / 2, anchor.y);
     super.update(dt);
+  }
+
+  @override
+  void onCollision(Set<Vector2> intersectionPoints, PositionComponent other) async {
+    if (other is Berry) {
+      if (isEating) {
+        other.collidedPlayer();
+      }
+    }
+    super.onCollision(intersectionPoints, other);
   }
 
   FutureOr<void> loadAllAnimations() async {
@@ -84,8 +101,15 @@ class Player extends SpriteAnimationGroupComponent with HasGameRef<Chatgame>, Ke
     runDownrightAnimation =
         runningspriteSheet.createAnimation(row: 1, stepTime: animationSpeed, to: 4);
 
+    final eatingspriteSheet = SpriteSheet(
+        image: await gameRef.images.load('Characters/Bulbasaur/Eat-Anim.png'),
+        srcSize: Vector2(24.0, 32.0));
+
+    eatAnimation = eatingspriteSheet.createAnimation(row: 0, stepTime: animationSpeed, to: 4);
+
     animations = {
       PlayerState.idle: idleAnimation,
+      PlayerState.eat: eatAnimation,
       PlayerState.up: runUpAnimation,
       PlayerState.down: runDownAnimation,
       PlayerState.right: runRightAnimation,
@@ -100,42 +124,46 @@ class Player extends SpriteAnimationGroupComponent with HasGameRef<Chatgame>, Ke
   }
 
   void movePlayer(double dt) {
-    switch (playerDirection) {
-      case Direction.up:
-        current = PlayerState.up;
-        position.add(Vector2(0, -dt * moveSpeed));
-        break;
-      case Direction.down:
-        current = PlayerState.down;
-        position.add(Vector2(0, dt * moveSpeed));
-        break;
-      case Direction.left:
-        current = PlayerState.left;
-        position.add(Vector2(-dt * moveSpeed, 0));
-        break;
-      case Direction.right:
-        current = PlayerState.right;
-        position.add(Vector2(dt * moveSpeed, 0));
-        break;
-      case Direction.upleft:
-        current = PlayerState.upleft;
-        position.add(Vector2(-dt * moveSpeed, -dt * moveSpeed));
-        break;
-      case Direction.upright:
-        current = PlayerState.upright;
-        position.add(Vector2(dt * moveSpeed, -dt * moveSpeed));
-        break;
-      case Direction.downleft:
-        current = PlayerState.downleft;
-        position.add(Vector2(-dt * moveSpeed, dt * moveSpeed));
-        break;
-      case Direction.downright:
-        current = PlayerState.downright;
-        position.add(Vector2(dt * moveSpeed, dt * moveSpeed));
-        break;
-      case Direction.none:
-        current = PlayerState.idle;
-        break;
+    if (!isEating) {
+      switch (playerDirection) {
+        case Direction.up:
+          current = PlayerState.up;
+          position.add(Vector2(0, -dt * moveSpeed));
+          break;
+        case Direction.down:
+          current = PlayerState.down;
+          position.add(Vector2(0, dt * moveSpeed));
+          break;
+        case Direction.left:
+          current = PlayerState.left;
+          position.add(Vector2(-dt * moveSpeed, 0));
+          break;
+        case Direction.right:
+          current = PlayerState.right;
+          position.add(Vector2(dt * moveSpeed, 0));
+          break;
+        case Direction.upleft:
+          current = PlayerState.upleft;
+          position.add(Vector2(-dt * moveSpeed, -dt * moveSpeed));
+          break;
+        case Direction.upright:
+          current = PlayerState.upright;
+          position.add(Vector2(dt * moveSpeed, -dt * moveSpeed));
+          break;
+        case Direction.downleft:
+          current = PlayerState.downleft;
+          position.add(Vector2(-dt * moveSpeed, dt * moveSpeed));
+          break;
+        case Direction.downright:
+          current = PlayerState.downright;
+          position.add(Vector2(dt * moveSpeed, dt * moveSpeed));
+          break;
+        case Direction.none:
+          current = PlayerState.idle;
+          break;
+      }
+    } else {
+      current = PlayerState.eat;
     }
   }
 

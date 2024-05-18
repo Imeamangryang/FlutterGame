@@ -1,17 +1,23 @@
 import 'dart:async';
 
 import 'package:chatgame/components/Player/player.dart';
+import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:flame/sprite.dart';
 import 'package:flutter/widgets.dart';
 
 class Pikachu extends Player {
   Pikachu(playername) : super(playername: playername);
+
+  final hitbox =
+      RectangleHitbox(position: Vector2(16, 16), size: Vector2(20, 20), anchor: Anchor.center);
+
   @override
   FutureOr<void> onLoad() async {
     await loadAllAnimations();
 
     anchor = Anchor.center;
+    priority = 10;
     nickname = TextComponent(
         text: playername,
         textRenderer:
@@ -20,13 +26,28 @@ class Pikachu extends Player {
         position: Vector2(anchor.x + size.x / 2, anchor.y));
 
     add(nickname);
+
+    add(hitbox);
+    //debugMode = true;
+  }
+
+  @override
+  void update(double dt) {
+    if (current == PlayerState.idle) {
+      hitbox.position = Vector2(20, 16); // Adjust for idle animation
+    } else if (current == PlayerState.eat) {
+      hitbox.position = Vector2(12, 20);
+    } else {
+      hitbox.position = Vector2(16, 16); // Adjust for running animation
+    }
+    super.update(dt);
   }
 
   @override
   FutureOr<void> loadAllAnimations() async {
     final idlespriteSheet = SpriteSheet(
         image: await gameRef.images.load('Characters/Pikachu/Idle-Anim.png'),
-        srcSize: Vector2(40.0, 56.0));
+        srcSize: Vector2(40.0, 40.0));
 
     idleAnimation = idlespriteSheet.createAnimation(row: 0, stepTime: animationSpeed, to: 6);
 
@@ -48,8 +69,15 @@ class Pikachu extends Player {
     runDownrightAnimation =
         runningspriteSheet.createAnimation(row: 1, stepTime: animationSpeed, to: 4);
 
+    final eatingspriteSheet = SpriteSheet(
+        image: await gameRef.images.load('Characters/Pikachu/Eat-Anim.png'),
+        srcSize: Vector2(24.0, 40.0));
+
+    eatAnimation = eatingspriteSheet.createAnimation(row: 0, stepTime: animationSpeed, to: 4);
+
     animations = {
       PlayerState.idle: idleAnimation,
+      PlayerState.eat: eatAnimation,
       PlayerState.up: runUpAnimation,
       PlayerState.down: runDownAnimation,
       PlayerState.right: runRightAnimation,

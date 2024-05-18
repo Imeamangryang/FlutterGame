@@ -30,12 +30,12 @@ dev_dependencies:
   flutter_lints: ^3.0.0
 
 flutter:
-
   uses-material-design: true
   assets:
     - assets/images/
     - assets/tiles/
     - assets/images/HUD/
+    - assets/images/Berries/
     - assets/images/Characters/Pikachu/
     - assets/images/Characters/Charmander/
     - assets/images/Characters/Bulbasaur/

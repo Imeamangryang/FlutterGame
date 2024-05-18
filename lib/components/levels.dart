@@ -14,6 +14,7 @@ class Level extends World {
   FutureOr<void> onLoad() async {
     level = await TiledComponent.load('$levelName.tmx', Vector2.all(32)); // level의 맵 정보 Load
     add(level); // World에 추가
+
     return super.onLoad();
   }
 
