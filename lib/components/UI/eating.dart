@@ -28,6 +28,7 @@ class EatingButton extends SpriteComponent with HasGameRef<Chatgame>, TapCallbac
   @override
   void onTapUp(TapUpEvent event) {
     game.player.isEating = false;
+    game.sendMessage("", "IsNOTEating");
     sprite = Sprite(game.images.fromCache('HUD/EatingButton.png'));
     super.onTapUp(event);
   }
@@ -35,6 +36,7 @@ class EatingButton extends SpriteComponent with HasGameRef<Chatgame>, TapCallbac
   @override
   void onTapDown(TapDownEvent event) {
     game.player.isEating = true;
+    game.sendMessage("", "IsEating");
     sprite = Sprite(game.images.fromCache('HUD/EatingButton_down.png'));
     super.onTapDown(event);
   }

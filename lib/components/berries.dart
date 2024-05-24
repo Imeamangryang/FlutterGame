@@ -20,7 +20,7 @@ class Berry extends SpriteComponent with HasGameRef<Chatgame>, CollisionCallback
     return super.onLoad();
   }
 
-  void collidedPlayer() {
+  FutureOr<void> collidedPlayer() async {
     removeFromParent();
   }
 }

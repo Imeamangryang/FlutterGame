@@ -103,10 +103,10 @@ class Chatgame extends FlameGame
 
     listenMessage();
 
-    for (int i = 0; i < berryList.length; i++) {
-      final berry = Berry(berry: berryList[i], position: Vector2(300 + i * 30, 300));
-      world.add(berry);
-    }
+    // for (int i = 0; i < berryList.length; i++) {
+    //   final berry = Berry(berry: berryList[i], position: Vector2(300 + i * 30, 300));
+    //   world.add(berry);
+    // }
 
     if (kIsWeb) {
     } else {
@@ -303,7 +303,24 @@ class Chatgame extends FlameGame
               }
             }
           }
+        case 'SpawnBerry':
+          final berry =
+              Berry(berry: data['Message'], position: Vector2(data['PosX'], data['PosY']));
+          world.add(berry);
 
+        case 'IsEating':
+          for (var otherplayer in playerlist) {
+            if (otherplayer.playerID == data['PlayerID']) {
+              otherplayer.isEating = true;
+            }
+          }
+
+        case 'IsNOTEating':
+          for (var otherplayer in playerlist) {
+            if (otherplayer.playerID == data['PlayerID']) {
+              otherplayer.isEating = false;
+            }
+          }
         default:
           break;
       }

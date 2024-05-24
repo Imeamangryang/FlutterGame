@@ -69,7 +69,7 @@ class Player extends SpriteAnimationGroupComponent
   void onCollision(Set<Vector2> intersectionPoints, PositionComponent other) async {
     if (other is Berry) {
       if (isEating) {
-        other.collidedPlayer();
+        await other.collidedPlayer();
       }
     }
     super.onCollision(intersectionPoints, other);
