@@ -16,7 +16,6 @@ import 'package:flame/components.dart';
 import 'package:flame/events.dart';
 import 'package:flame/game.dart';
 import 'package:flame/input.dart';
-import 'package:flame/widgets.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
@@ -63,28 +62,6 @@ class Chatgame extends FlameGame
   @override
   final Level world = Level(levelName: 'lobby');
 
-  List<String> berryList = [
-    'belue-berry',
-    'bluk-berry',
-    'cheri-berry',
-    'chesto-berry',
-    'durin-berry',
-    'enigma-berry',
-    'figy-berry',
-    'grepa-berry',
-    'leppa-berry',
-    'lum-berry',
-    'mago-berry',
-    'oran-berry',
-    'pamtre-berry',
-    'pecha-berry',
-    'persim-berry',
-    'rawst-berry',
-    'sitrus-berry',
-    'wiki-berry',
-    'yache-berry'
-  ];
-
   @override
   FutureOr<void> onLoad() async {
     await images.loadAllImages();
@@ -102,11 +79,6 @@ class Chatgame extends FlameGame
     cam.follow(player);
 
     listenMessage();
-
-    // for (int i = 0; i < berryList.length; i++) {
-    //   final berry = Berry(berry: berryList[i], position: Vector2(300 + i * 30, 300));
-    //   world.add(berry);
-    // }
 
     if (kIsWeb) {
     } else {

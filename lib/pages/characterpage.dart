@@ -1,3 +1,4 @@
+import 'package:audioplayers/audioplayers.dart';
 import 'package:chatgame/pages/gamepage.dart';
 import 'package:flutter/material.dart';
 
@@ -10,6 +11,10 @@ class CharacterMenu extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final audioPlayer = AudioPlayer();
+    audioPlayer.setReleaseMode(ReleaseMode.loop);
+    audioPlayer.play(AssetSource('audios/menu.mp3'), volume: 0.5);
+
     return Scaffold(
       body: Center(
           child: Column(
@@ -41,6 +46,9 @@ class CharacterMenu extends StatelessWidget {
                             name: name,
                             character: 'Bulbasaur',
                           )));
+                  audioPlayer.pause();
+                  audioPlayer.setReleaseMode(ReleaseMode.release);
+                  audioPlayer.play(AssetSource('audios/bulbasaur.mp3'));
                 },
               ),
               IconButton(
@@ -60,6 +68,9 @@ class CharacterMenu extends StatelessWidget {
                             name: name,
                             character: 'Charmander',
                           )));
+                  audioPlayer.pause();
+                  audioPlayer.setReleaseMode(ReleaseMode.release);
+                  audioPlayer.play(AssetSource('audios/charmander.mp3'));
                 },
               ),
               IconButton(
@@ -79,6 +90,9 @@ class CharacterMenu extends StatelessWidget {
                             name: name,
                             character: 'Squirtle',
                           )));
+                  audioPlayer.pause();
+                  audioPlayer.setReleaseMode(ReleaseMode.release);
+                  audioPlayer.play(AssetSource('audios/squirtle.mp3'));
                 },
               ),
               IconButton(
@@ -98,6 +112,9 @@ class CharacterMenu extends StatelessWidget {
                             name: name,
                             character: 'Pikachu',
                           )));
+                  audioPlayer.pause();
+                  audioPlayer.setReleaseMode(ReleaseMode.release);
+                  audioPlayer.play(AssetSource('audios/pikachu.mp3'));
                 },
               ),
             ],

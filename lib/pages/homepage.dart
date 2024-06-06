@@ -1,3 +1,4 @@
+import 'package:audioplayers/audioplayers.dart';
 import 'package:chatgame/pages/characterpage.dart';
 import 'package:flutter/material.dart';
 
@@ -7,6 +8,9 @@ class MainMenu extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     late String nickname;
+    final audioPlayer = AudioPlayer();
+    audioPlayer.setReleaseMode(ReleaseMode.loop);
+    audioPlayer.play(AssetSource('audios/title.mp3'), volume: 0.5);
     return Scaffold(
       body: Center(
         child: Column(
@@ -15,38 +19,33 @@ class MainMenu extends StatelessWidget {
             Padding(
                 padding: const EdgeInsets.symmetric(vertical: 30.0),
                 child: Text('Pokemon Chat!',
-                    style: Theme.of(context)
-                        .textTheme
-                        .bodyMedium
-                        ?.copyWith(fontSize: 50, shadows: [
+                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(fontSize: 50, shadows: [
                       const Shadow(
-                          blurRadius: 10,
-                          color: Color.fromARGB(255, 0, 0, 0),
-                          offset: Offset(0, 0))
+                          blurRadius: 10, color: Color.fromARGB(255, 0, 0, 0), offset: Offset(0, 0))
                     ]))),
             SizedBox(
               width: 400,
               child: TextField(
+                onChanged: (value) {
+                  nickname = value;
+                },
                 onSubmitted: (value) {
                   nickname = value;
                 },
                 decoration: const InputDecoration(
                     focusedBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.all(Radius.circular(20.0)),
-                      borderSide: BorderSide(
-                          width: 2.5, color: Color.fromARGB(255, 0, 0, 0)),
+                      borderSide: BorderSide(width: 2.5, color: Color.fromARGB(255, 0, 0, 0)),
                     ),
                     enabledBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.all(Radius.circular(20.0)),
-                      borderSide: BorderSide(
-                          width: 2.5, color: Color.fromARGB(255, 0, 0, 0)),
+                      borderSide: BorderSide(width: 2.5, color: Color.fromARGB(255, 0, 0, 0)),
                     ),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.all(Radius.circular(20.0)),
                     ),
                     labelText: '닉네임',
-                    labelStyle: TextStyle(
-                        color: Color.fromARGB(255, 0, 0, 0), fontSize: 25),
+                    labelStyle: TextStyle(color: Color.fromARGB(255, 0, 0, 0), fontSize: 25),
                     filled: true,
                     fillColor: Color.fromARGB(255, 214, 242, 255)),
               ),
@@ -59,6 +58,8 @@ class MainMenu extends StatelessWidget {
                         builder: (context) => CharacterMenu(
                               name: nickname,
                             )));
+                    audioPlayer.pause();
+                    audioPlayer.dispose();
                   },
                   child: const Text('Next')),
             ),
