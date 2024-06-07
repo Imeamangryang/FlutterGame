@@ -1,7 +1,8 @@
 import 'dart:async';
 
 import 'package:chatgame/chatgame.dart';
-import 'package:chatgame/components/berries.dart';
+import 'package:chatgame/components/Map/berries.dart';
+import 'package:chatgame/components/Map/collision_block.dart';
 import 'package:chatgame/components/UI/textbox.dart';
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
@@ -70,6 +71,24 @@ class Player extends SpriteAnimationGroupComponent
     if (other is Berry) {
       if (isEating) {
         await other.collidedPlayer();
+      }
+    } else if (other is CollisionBlock) {
+      final overlap =
+          intersectionPoints.reduce((a, b) => a + b) / intersectionPoints.length.toDouble();
+
+      // Determine the direction of the overlap
+      if (overlap.y > position.y) {
+        // Collision from above
+        position.y = other.position.y + other.size.y;
+      } else if (overlap.y < position.y) {
+        // Collision from below
+        position.y = other.position.y - size.y;
+      } else if (overlap.x > position.x) {
+        // Collision from the left
+        position.x = other.position.x + other.size.x;
+      } else if (overlap.x < position.x) {
+        // Collision from the right
+        position.x = other.position.x - size.x;
       }
     }
     super.onCollision(intersectionPoints, other);

@@ -1,21 +1,24 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:ffi';
 import 'dart:io';
 
 import 'package:chatgame/components/UI/eating.dart';
-import 'package:chatgame/components/berries.dart';
+import 'package:chatgame/components/Map/berries.dart';
+import 'package:chatgame/components/UI/hud.dart';
 import 'package:chatgame/components/characters/bulbasaur.dart';
 import 'package:chatgame/components/characters/charmander.dart';
 import 'package:chatgame/components/characters/pikachu.dart';
 import 'package:chatgame/components/characters/squirtle.dart';
 import 'package:chatgame/components/UI/chat.dart';
-import 'package:chatgame/components/levels.dart';
+import 'package:chatgame/components/Map/levels.dart';
 import 'package:chatgame/components/Player/player.dart';
 import 'package:chatgame/components/UI/textbox.dart';
 import 'package:flame/components.dart';
 import 'package:flame/events.dart';
 import 'package:flame/game.dart';
 import 'package:flame/input.dart';
+import 'package:flame_audio/flame_audio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
@@ -58,6 +61,7 @@ class Chatgame extends FlameGame
   late JoystickComponent joystick;
   bool showjoystick = false;
   Direction previousDirection = Direction.none;
+  int onlineplayerCount = 1;
 
   @override
   final Level world = Level(levelName: 'lobby');
@@ -70,6 +74,7 @@ class Chatgame extends FlameGame
     cam.viewfinder.anchor = Anchor.center;
     cam.viewfinder.zoom = 2;
     cam.priority = 1;
+    cam.viewport.add(HUD());
 
     await addAll([cam, world]);
 
@@ -93,6 +98,9 @@ class Chatgame extends FlameGame
 
     final eatbutton = EatingButton();
     add(eatbutton);
+
+    FlameAudio.bgm.initialize();
+    FlameAudio.bgm.play('TreasureTown.mp3', volume: 0.3);
 
     return super.onLoad();
   }
@@ -230,6 +238,7 @@ class Chatgame extends FlameGame
         case 'AddPlayer':
           setplayer(data['PlayerID'], data['PlayerName'], data['Message'],
               Vector2(data['PosX'], data['PosY']));
+          onlineplayerCount++;
           break;
         case "RemovePlayer":
           var targetplayer;
@@ -241,6 +250,7 @@ class Chatgame extends FlameGame
             }
           }
           playerlist.remove(targetplayer);
+          onlineplayerCount--;
         case 'MovePlayer':
           for (var otherplayer in playerlist) {
             if (otherplayer.playerID == data['PlayerID']) {

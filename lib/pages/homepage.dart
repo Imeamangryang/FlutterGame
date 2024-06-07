@@ -10,7 +10,7 @@ class MainMenu extends StatelessWidget {
     late String nickname;
     final audioPlayer = AudioPlayer();
     audioPlayer.setReleaseMode(ReleaseMode.loop);
-    audioPlayer.play(AssetSource('audios/title.mp3'), volume: 0.5);
+    audioPlayer.play(AssetSource('audio/title.mp3'), volume: 0.5);
     return Scaffold(
       body: Center(
         child: Column(

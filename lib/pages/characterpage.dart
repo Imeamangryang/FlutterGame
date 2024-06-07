@@ -13,7 +13,7 @@ class CharacterMenu extends StatelessWidget {
   Widget build(BuildContext context) {
     final audioPlayer = AudioPlayer();
     audioPlayer.setReleaseMode(ReleaseMode.loop);
-    audioPlayer.play(AssetSource('audios/menu.mp3'), volume: 0.5);
+    audioPlayer.play(AssetSource('audio/menu.mp3'), volume: 0.5);
 
     return Scaffold(
       body: Center(
@@ -48,7 +48,7 @@ class CharacterMenu extends StatelessWidget {
                           )));
                   audioPlayer.pause();
                   audioPlayer.setReleaseMode(ReleaseMode.release);
-                  audioPlayer.play(AssetSource('audios/bulbasaur.mp3'));
+                  audioPlayer.play(AssetSource('audio/bulbasaur.mp3'));
                 },
               ),
               IconButton(
@@ -70,7 +70,7 @@ class CharacterMenu extends StatelessWidget {
                           )));
                   audioPlayer.pause();
                   audioPlayer.setReleaseMode(ReleaseMode.release);
-                  audioPlayer.play(AssetSource('audios/charmander.mp3'));
+                  audioPlayer.play(AssetSource('audio/charmander.mp3'));
                 },
               ),
               IconButton(
@@ -92,7 +92,7 @@ class CharacterMenu extends StatelessWidget {
                           )));
                   audioPlayer.pause();
                   audioPlayer.setReleaseMode(ReleaseMode.release);
-                  audioPlayer.play(AssetSource('audios/squirtle.mp3'));
+                  audioPlayer.play(AssetSource('audio/squirtle.mp3'));
                 },
               ),
               IconButton(
@@ -114,7 +114,7 @@ class CharacterMenu extends StatelessWidget {
                           )));
                   audioPlayer.pause();
                   audioPlayer.setReleaseMode(ReleaseMode.release);
-                  audioPlayer.play(AssetSource('audios/pikachu.mp3'));
+                  audioPlayer.play(AssetSource('audio/pikachu.mp3'));
                 },
               ),
             ],
