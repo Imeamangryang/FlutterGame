@@ -1,8 +1,10 @@
-# Pokemon Idle Social game
+# Pokemon Social chatting game
 
 **소개**🔥
-> 포켓몬과 함께 즐기는 소셜 방치형 멀티 게임
-
+> 포켓몬과 함께 즐기는 소셜 멀티 게임
+![chatgame 2024-06-09 오후 7_53_07](https://github.com/Imeamangryang/FlutterGame/assets/100024733/a86bbad9-c94f-40a3-a930-cd1596504cda)
+![chatgame 2024-06-09 오후 7_53_24](https://github.com/Imeamangryang/FlutterGame/assets/100024733/0b67ed7c-ed0b-45cf-b316-7504cd2012db)
+![chatgame 2024-06-09 오후 7_53_38](https://github.com/Imeamangryang/FlutterGame/assets/100024733/0461f309-402c-416a-be77-870797acfbc5)
 
 <br/>
 <br/>
@@ -26,9 +28,14 @@ $ flutter run
 
 ```
 > 만약 종속성 설치가 안된다면 프로젝트의 파일 이름을 영어 소문자로 변경하세요.  
-> 혹은 아래의 패키지를 직접 추가하세요.
+> 혹은 아래의 명령어를 통해 패키지를 직접 추가하세요.
 ```
-flutter pub add flame
-flutter pub add flame_tiled  
-flutter pub add google_fonts
+flutter pub add { Packages } 
 ```
+**Source**
+
+게임 소스 출처  
+
+[Assets](https://sprites.pmdcollab.org/#/)
+
+
